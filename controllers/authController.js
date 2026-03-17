@@ -64,7 +64,7 @@ export const seedAdmin = async (req, res) => {
   try {
     const exists = await User.findOne({ role: "admin" });
     if (exists) return res.status(400).json({ message: "Admin already exists" });
-    const admin = await User.create({ name: "Maasha Admin", email: process.env.ADMIN_EMAIL, password: "Admin@maasha2026", role: "admin" });
+    const admin = await User.create({ name: "Maasha Admin", email: process.env.ADMIN_EMAIL || "maashaskincare@gmail.com", password: "Admin@maasha2026", role: "admin" });
     res.status(201).json({ message: "Admin created", email: admin.email });
   } catch (err) { res.status(500).json({ message: err.message }); }
 };
