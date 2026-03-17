@@ -1,0 +1,13 @@
+import express from "express";
+import { createOrder, verifyPayment, getMyOrders, getAllOrders, updateOrderStatus, getOrderById, getDashboardStats } from "../controllers/orderController.js";
+import { protect } from "../middleware/auth.js";
+import { adminOnly } from "../middleware/admin.js";
+const router = express.Router();
+router.post("/", createOrder);
+router.post("/verify-payment", verifyPayment);
+router.get("/my-orders", protect, getMyOrders);
+router.get("/admin/all", protect, adminOnly, getAllOrders);
+router.get("/admin/stats", protect, adminOnly, getDashboardStats);
+router.get("/:id", protect, getOrderById);
+router.put("/:id/status", protect, adminOnly, updateOrderStatus);
+export default router;

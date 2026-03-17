@@ -1,0 +1,10 @@
+import express from "express";
+import { addReview, getProductReviews, approveReview, getAllReviewsAdmin } from "../controllers/reviewController.js";
+import { protect } from "../middleware/auth.js";
+import { adminOnly } from "../middleware/admin.js";
+const router = express.Router();
+router.post("/", protect, addReview);
+router.get("/product/:productId", getProductReviews);
+router.get("/admin/all", protect, adminOnly, getAllReviewsAdmin);
+router.put("/:id/approve", protect, adminOnly, approveReview);
+export default router;

@@ -1,0 +1,11 @@
+import express from "express";
+import { getBanners, createBanner, updateBanner, deleteBanner } from "../controllers/bannerController.js";
+import { protect } from "../middleware/auth.js";
+import { adminOnly } from "../middleware/admin.js";
+import { upload } from "../config/cloudinary.js";
+const router = express.Router();
+router.get("/", getBanners);
+router.post("/", protect, adminOnly, upload.single("image"), createBanner);
+router.put("/:id", protect, adminOnly, updateBanner);
+router.delete("/:id", protect, adminOnly, deleteBanner);
+export default router;

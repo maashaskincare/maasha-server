@@ -1,0 +1,13 @@
+import express from "express";
+import { getBlogs, getBlogBySlug, createBlog, updateBlog, deleteBlog, getAllBlogsAdmin } from "../controllers/blogController.js";
+import { protect } from "../middleware/auth.js";
+import { adminOnly } from "../middleware/admin.js";
+import { upload } from "../config/cloudinary.js";
+const router = express.Router();
+router.get("/", getBlogs);
+router.get("/admin/all", protect, adminOnly, getAllBlogsAdmin);
+router.get("/:slug", getBlogBySlug);
+router.post("/", protect, adminOnly, upload.single("featuredImage"), createBlog);
+router.put("/:id", protect, adminOnly, updateBlog);
+router.delete("/:id", protect, adminOnly, deleteBlog);
+export default router;

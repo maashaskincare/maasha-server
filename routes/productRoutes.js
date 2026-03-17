@@ -1,0 +1,15 @@
+import express from "express";
+import { getProducts, getProductBySlug, getFeaturedProducts, getBestSellers, createProduct, updateProduct, deleteProduct, getAllProductsAdmin } from "../controllers/productController.js";
+import { protect } from "../middleware/auth.js";
+import { adminOnly } from "../middleware/admin.js";
+import { upload } from "../config/cloudinary.js";
+const router = express.Router();
+router.get("/", getProducts);
+router.get("/featured", getFeaturedProducts);
+router.get("/bestsellers", getBestSellers);
+router.get("/admin/all", protect, adminOnly, getAllProductsAdmin);
+router.get("/:slug", getProductBySlug);
+router.post("/", protect, adminOnly, upload.array("images", 5), createProduct);
+router.put("/:id", protect, adminOnly, updateProduct);
+router.delete("/:id", protect, adminOnly, deleteProduct);
+export default router;
