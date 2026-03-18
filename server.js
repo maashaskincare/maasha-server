@@ -19,7 +19,23 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:3000", process.env.FRONTEND_URL],
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "https://maasha-client.onrender.com",
+      process.env.FRONTEND_URL,
+    ];
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    // Allow any GitHub Codespace URL
+    if (origin.includes(".app.github.dev")) return callback(null, true);
+    // Allow any Render URL
+    if (origin.includes(".onrender.com")) return callback(null, true);
+    // Check allowed list
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error("Not allowed by CORS"));
+  },
   credentials: true,
 }));
 
