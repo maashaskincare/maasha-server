@@ -24,16 +24,14 @@ app.use(cors({
       "http://localhost:5173",
       "http://localhost:3000",
       "https://maasha-client.onrender.com",
+      "https://maasha-client.vercel.app",
       process.env.FRONTEND_URL,
     ];
-    // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
-    // Allow any GitHub Codespace URL
     if (origin.includes(".app.github.dev")) return callback(null, true);
-    // Allow any Render URL
-    if (origin.includes(".onrender.com")) return callback(null, true);
-    // Check allowed list
-    if (allowedOrigins.includes(origin)) return callback(null, true);
+    if (origin.includes(".onrender.com"))   return callback(null, true);
+    if (origin.includes(".vercel.app"))     return callback(null, true);
+    if (allowedOrigins.includes(origin))    return callback(null, true);
     return callback(new Error("Not allowed by CORS"));
   },
   credentials: true,
@@ -44,16 +42,16 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.get("/", (req, res) => res.json({ message: "Maasha Skin Care API is running!", version: "1.0.0" }));
 
-app.use("/api/auth", authRoutes);
-app.use("/api/products", productRoutes);
+app.use("/api/auth",       authRoutes);
+app.use("/api/products",   productRoutes);
 app.use("/api/categories", categoryRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/blogs", blogRoutes);
-app.use("/api/reviews", reviewRoutes);
-app.use("/api/coupons", couponRoutes);
-app.use("/api/banners", bannerRoutes);
-app.use("/api/upload", uploadRoutes);
-app.use("/api/admin", adminRoutes);
+app.use("/api/orders",     orderRoutes);
+app.use("/api/blogs",      blogRoutes);
+app.use("/api/reviews",    reviewRoutes);
+app.use("/api/coupons",    couponRoutes);
+app.use("/api/banners",    bannerRoutes);
+app.use("/api/upload",     uploadRoutes);
+app.use("/api/admin",      adminRoutes);
 
 app.use((req, res) => res.status(404).json({ message: "Route not found" }));
 app.use((err, req, res, next) => {
