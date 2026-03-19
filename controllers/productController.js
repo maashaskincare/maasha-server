@@ -61,7 +61,14 @@ export const getProducts = async (req, res) => {
 
     const query = { status: "published" };
 
-    if (category) query.category = category;
+    if (category) {
+      try {
+        const { default: Category } = await import('../models/Category.js');
+        const cat = await Category.findOne({ slug: category });
+        if (cat) query.category = cat._id;
+        else query.category = category;
+      } catch(e) { query.category = category; }
+    }
     if (skinType) query.skinTypes = skinType;
     if (minPrice || maxPrice) {
       query.price = {};
