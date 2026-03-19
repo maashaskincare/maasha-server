@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/", getBlogs);
 router.get("/admin/all", protect, adminOnly, getAllBlogsAdmin);
 router.get("/:slug", getBlogBySlug);
-router.post("/", protect, adminOnly, upload.single("featuredImage"), createBlog);
+router.post("/", protect, adminOnly, createBlog);
 router.put("/:id", protect, adminOnly, updateBlog);
 router.delete("/:id", protect, adminOnly, deleteBlog);
 export default router;

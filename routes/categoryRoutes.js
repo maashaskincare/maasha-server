@@ -5,7 +5,7 @@ import { adminOnly } from "../middleware/admin.js";
 import { upload } from "../config/cloudinary.js";
 const router = express.Router();
 router.get("/", getCategories);
-router.post("/", protect, adminOnly, upload.single("image"), createCategory);
+router.post("/", protect, adminOnly, createCategory);
 router.put("/:id", protect, adminOnly, updateCategory);
 router.delete("/:id", protect, adminOnly, deleteCategory);
 export default router;

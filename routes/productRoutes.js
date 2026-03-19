@@ -9,7 +9,7 @@ router.get("/featured", getFeaturedProducts);
 router.get("/bestsellers", getBestSellers);
 router.get("/admin/all", protect, adminOnly, getAllProductsAdmin);
 router.get("/:slug", getProductBySlug);
-router.post("/", protect, adminOnly, upload.array("images", 5), createProduct);
+router.post("/", protect, adminOnly, createProduct);
 router.put("/:id", protect, adminOnly, updateProduct);
 router.delete("/:id", protect, adminOnly, deleteProduct);
 export default router;
