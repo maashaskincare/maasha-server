@@ -166,9 +166,9 @@ export const createProduct = async (req, res) => {
     // Auto-generate slug from name
     const slug = slugify(sanitized.name, { lower: true, strict: true });
 
-    // Handle uploaded images
-    const images = req.files
-      ? req.files.map((f) => ({ url: f.path, publicId: f.filename }))
+    // Handle images from body (pre-uploaded via /api/upload/single)
+    const images = req.body.images
+      ? (Array.isArray(req.body.images) ? req.body.images : JSON.parse(req.body.images))
       : [];
 
     // Check for duplicate slug
