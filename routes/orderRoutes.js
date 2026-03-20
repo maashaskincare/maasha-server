@@ -3,7 +3,7 @@ import { createOrder, verifyPayment, getMyOrders, getAllOrders, updateOrderStatu
 import { protect } from "../middleware/auth.js";
 import { adminOnly } from "../middleware/admin.js";
 const router = express.Router();
-router.post("/", createOrder);
+router.post("/", protect, createOrder);
 router.post("/verify-payment", verifyPayment);
 router.get("/my-orders", protect, getMyOrders);
 router.get("/admin/all", protect, adminOnly, getAllOrders);
