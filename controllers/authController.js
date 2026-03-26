@@ -6,6 +6,10 @@ const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expires
 export const register = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body;
+    if (!name || !name.trim()) return res.status(400).json({ message: "Name is required" });
+    if (!email || !email.trim()) return res.status(400).json({ message: "Email is required" });
+    if (!phone || !phone.trim()) return res.status(400).json({ message: "Phone number is required" });
+    if (!password || password.length < 6) return res.status(400).json({ message: "Password must be at least 6 characters" });
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: "Email already registered" });
     const user = await User.create({ name, email, phone, password });

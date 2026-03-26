@@ -9,15 +9,36 @@ export const getBanners = async (req, res) => {
 
 export const createBanner = async (req, res) => {
   try {
-    const image = req.file ? { url: req.file.path, publicId: req.file.filename } : {};
-    const banner = await Banner.create({ ...req.body, image });
+    let image = {};
+    
+    // If file uploaded via multer
+    if (req.file) {
+      image = { url: req.file.path, publicId: req.file.filename };
+    }
+    // If image URL sent directly (from separate upload)
+    else if (req.body.image) {
+      image = { url: req.body.image, publicId: '' };
+    }
+    
+    const banner = await Banner.create({ 
+      title: req.body.title,
+      subtitle: req.body.subtitle,
+      link: req.body.link,
+      isActive: req.body.active ?? req.body.isActive ?? true,
+      order: req.body.order || 0,
+      image 
+    });
     res.status(201).json(banner);
   } catch (err) { res.status(500).json({ message: err.message }); }
 };
 
 export const updateBanner = async (req, res) => {
   try {
-    const banner = await Banner.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updateData = { ...req.body };
+    if (req.body.image && typeof req.body.image === 'string') {
+      updateData.image = { url: req.body.image, publicId: '' };
+    }
+    const banner = await Banner.findByIdAndUpdate(req.params.id, updateData, { new: true });
     res.json(banner);
   } catch (err) { res.status(500).json({ message: err.message }); }
 };
